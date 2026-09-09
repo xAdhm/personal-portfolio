@@ -1,4 +1,4 @@
-# Personal Portfolio
+# Personal Portfolio (update soon)
 
 A clean, minimalist personal portfolio built with Next.js 14, TypeScript, and Tailwind CSS.
 
