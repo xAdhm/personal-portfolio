@@ -10,7 +10,7 @@ const archivo = Archivo({
   display: "swap",
 });
 
-const title = "Adham Mustafa, software engineer";
+const title = "Adham Mustafa";
 const description =
   "Software engineer. I build things end to end, from the database to the screen.";
 
