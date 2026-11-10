@@ -1,0 +1,314 @@
+@import "tailwindcss";
+
+/* ------------------------------------------------------------------
+   Tokens. Every colour on the site resolves to one of these.
+   ------------------------------------------------------------------ */
+:root {
+  color-scheme: dark;
+
+  --ground: #0b0d10;
+  --surface: #15181d;
+  --line: #2a2f37;
+  --line-hi: #3a4049;
+  --accent: #3d63ff;
+  --accent-hi: #5878ff;
+  --accent-deep: #2a49cc;
+  --text: #e6e9ee;
+  --muted: #8a929e;
+  --white: #ffffff;
+  --white-50: rgb(255 255 255 / 0.5);
+  --white-88: rgb(255 255 255 / 0.88);
+
+  --ease-wipe: cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+@theme inline {
+  --color-ground: var(--ground);
+  --color-surface: var(--surface);
+  --color-line: var(--line);
+  --color-line-hi: var(--line-hi);
+  --color-accent: var(--accent);
+  --color-accent-hi: var(--accent-hi);
+  --color-accent-deep: var(--accent-deep);
+  --color-text: var(--text);
+  --color-muted: var(--muted);
+  --color-white: var(--white);
+  --color-white-50: var(--white-50);
+
+  --font-sans: var(--font-archivo), system-ui, sans-serif;
+
+  /* The site's single breakpoint. */
+  --breakpoint-md: 860px;
+}
+
+/* ------------------------------------------------------------------
+   Base
+   ------------------------------------------------------------------ */
+@layer base {
+  html {
+    background: var(--ground);
+    -webkit-text-size-adjust: 100%;
+    scrollbar-color: var(--line-hi) var(--ground);
+  }
+
+  body {
+    background: var(--ground);
+    color: var(--text);
+    font-family: var(--font-sans);
+    font-size: 1.05rem;
+    line-height: 1.6;
+    padding-top: env(safe-area-inset-top);
+    padding-bottom: env(safe-area-inset-bottom);
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-rendering: optimizeLegibility;
+  }
+
+  ::selection {
+    background: var(--accent);
+    color: var(--white);
+  }
+
+  h1,
+  h2,
+  h3 {
+    text-wrap: balance;
+  }
+
+  p,
+  li {
+    text-wrap: pretty;
+  }
+}
+
+/* ------------------------------------------------------------------
+   Spacing and type scale
+   ------------------------------------------------------------------ */
+@utility pad-section {
+  padding: clamp(44px, 6vw, 80px) clamp(22px, 4vw, 56px);
+}
+
+@utility pad-band {
+  padding: clamp(26px, 3.5vw, 40px) clamp(22px, 4vw, 56px);
+}
+
+@utility pad-contact {
+  padding: clamp(56px, 8vw, 110px) clamp(22px, 4vw, 56px);
+}
+
+@utility type-hero-name {
+  font-size: clamp(3rem, 11.5vw, 8.4rem);
+  font-weight: 700;
+  letter-spacing: -0.045em;
+  line-height: 0.84;
+}
+
+@utility type-hero-pitch {
+  font-size: clamp(1.3rem, 2.9vw, 2.15rem);
+  font-weight: 500;
+  letter-spacing: -0.02em;
+  line-height: 1.18;
+}
+
+@utility type-contact {
+  font-size: clamp(2.4rem, 8vw, 5.4rem);
+  font-weight: 700;
+  letter-spacing: -0.04em;
+  line-height: 0.9;
+}
+
+@utility type-project-title {
+  font-size: clamp(2rem, 5.6vw, 3.7rem);
+  font-weight: 600;
+  letter-spacing: -0.035em;
+  line-height: 0.98;
+}
+
+@utility type-band {
+  font-size: clamp(1.5rem, 3.8vw, 2.4rem);
+  font-weight: 600;
+  letter-spacing: -0.025em;
+  line-height: 1;
+}
+
+@utility type-hook {
+  font-size: clamp(1.05rem, 2.1vw, 1.4rem);
+  font-weight: 400;
+  letter-spacing: normal;
+  line-height: 1.5;
+}
+
+@utility type-about {
+  font-size: clamp(1.15rem, 2.2vw, 1.55rem);
+  font-weight: 400;
+  letter-spacing: -0.012em;
+  line-height: 1.45;
+}
+
+@utility type-role {
+  font-size: 1.3rem;
+  font-weight: 600;
+  letter-spacing: -0.015em;
+  line-height: 1.2;
+}
+
+@utility type-body {
+  font-size: 1.05rem;
+  font-weight: 400;
+  letter-spacing: normal;
+  line-height: 1.6;
+}
+
+@utility type-chip {
+  font-size: 0.82rem;
+  font-weight: 400;
+  letter-spacing: normal;
+  line-height: 1;
+}
+
+/* ------------------------------------------------------------------
+   Bullets: a 9px x 2px bar, centred on the first line of text.
+   ------------------------------------------------------------------ */
+@layer components {
+  .bar-list > li {
+    position: relative;
+    padding-left: 24px;
+  }
+
+  .bar-list > li::before {
+    content: "";
+    position: absolute;
+    left: 0;
+    top: calc(0.8em - 1px);
+    width: 9px;
+    height: 2px;
+    background: var(--bar, var(--accent));
+  }
+
+  /* ----------------------------------------------------------------
+     Buttons: one mechanic everywhere.
+     ::after holds the rest fill, ::before holds the hover fill.
+     On hover/focus ::before grows up from the bottom while ::after
+     shrinks toward the top on the same curve, so the new colour
+     reads as a wipe even when both fills are opaque.
+     ---------------------------------------------------------------- */
+  .btn {
+    position: relative;
+    overflow: hidden;
+    isolation: isolate;
+    display: inline-flex;
+    align-items: center;
+    padding: 11px 20px;
+    border: 1px solid var(--btn-border);
+    border-radius: 3px;
+    font-size: 0.95rem;
+    font-weight: 500;
+    line-height: 1.2;
+    color: var(--btn-fg);
+    text-decoration: none;
+    white-space: nowrap;
+    user-select: none;
+    -webkit-tap-highlight-color: transparent;
+    transition:
+      color 220ms var(--ease-wipe),
+      border-color 220ms var(--ease-wipe),
+      transform 60ms linear;
+  }
+
+  .btn::before,
+  .btn::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    transition: transform 220ms var(--ease-wipe);
+  }
+
+  .btn::before {
+    z-index: -1;
+    background: var(--btn-fill);
+    transform: scaleY(0);
+    transform-origin: bottom;
+  }
+
+  .btn::after {
+    z-index: -2;
+    background: var(--btn-rest, transparent);
+    transform: scaleY(1);
+    transform-origin: top;
+  }
+
+  /* Not gated behind (hover: hover): touchscreen laptops report no hover
+     even with a mouse attached, which silently disabled the wipe. */
+  .btn:hover,
+  .btn:focus-visible {
+    color: var(--btn-fg-hover);
+    border-color: var(--btn-border-hover);
+  }
+  .btn:hover::before,
+  .btn:focus-visible::before {
+    transform: scaleY(1);
+  }
+  .btn:hover::after,
+  .btn:focus-visible::after {
+    transform: scaleY(0);
+  }
+
+  .btn:focus-visible {
+    outline: 2px solid var(--btn-ring);
+    outline-offset: 3px;
+  }
+
+  .btn:active {
+    transform: translateY(1px);
+  }
+
+  /* Secondary on dark */
+  .btn[data-tone="dark"][data-variant="secondary"] {
+    --btn-fg: var(--text);
+    --btn-border: var(--line-hi);
+    --btn-fill: var(--text);
+    --btn-fg-hover: var(--ground);
+    --btn-border-hover: var(--text);
+    --btn-ring: var(--accent-hi);
+  }
+
+  /* Primary on dark */
+  .btn[data-tone="dark"][data-variant="primary"] {
+    --btn-fg: var(--white);
+    --btn-border: var(--accent);
+    --btn-rest: var(--accent);
+    --btn-fill: var(--accent-hi);
+    --btn-fg-hover: var(--white);
+    --btn-border-hover: var(--accent-hi);
+    --btn-ring: var(--accent-hi);
+  }
+
+  /* Secondary on blue */
+  .btn[data-tone="blue"][data-variant="secondary"] {
+    --btn-fg: var(--white);
+    --btn-border: var(--white-50);
+    --btn-fill: var(--white);
+    --btn-fg-hover: var(--accent-deep);
+    --btn-border-hover: var(--white);
+    --btn-ring: var(--white);
+  }
+
+  /* Primary on blue */
+  .btn[data-tone="blue"][data-variant="primary"] {
+    --btn-fg: var(--accent-deep);
+    --btn-border: var(--white);
+    --btn-rest: var(--white);
+    --btn-fill: var(--white-88);
+    --btn-fg-hover: var(--accent-deep);
+    --btn-border-hover: var(--white);
+    --btn-ring: var(--white);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .btn,
+  .btn::before,
+  .btn::after {
+    transition: none;
+  }
+}
